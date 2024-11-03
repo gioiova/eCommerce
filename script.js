@@ -12,7 +12,7 @@ const productsPerPage = 21; // Number of products to display per page
 async function getProducts(url) {
     const result = await fetch(url);
     const data = await result.json();
-    allProducts = data.products.filter(product => product.rating > 4); // Filter products with rating > 4
+    allProducts = data.products.filter(product => product.rating > 4.9); // Filter products with rating > 4
     displayedProducts = [...allProducts]; // Initialize displayed products with all products
     showProducts(currentPage);
     setupPagination();
@@ -51,7 +51,7 @@ function showProducts(page) {
         productEl.className = `flex flex-col bg-white shadow-lg border-gray-100 border sm:rounded-3xl p-4 ${widthClass}`; // Apply dynamic width class
 
         productEl.innerHTML = `
-    <div class="h-48 overflow-hidden flex items-center justify-center bg-white">
+    <div class="h-48  overflow-hidden flex items-center justify-center bg-white">
         <img class="rounded-3xl shadow-lg h-full w-auto object-cover" src="${thumbnail}" alt="">
     </div>
     <div class="flex flex-col mt-4 gap-4">
