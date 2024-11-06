@@ -116,7 +116,7 @@ function showProducts(page) {
             <div class="flex flex-col mt-4 gap-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-lg font-bold">${title}</h2>
-                    <div class="bg-green-500 text-white font-bold rounded-xl p-2">${rating}</div>
+                    <div class="${getClassByRate(rating)} bg-green-500 text-white font-bold rounded-xl p-2">${rating}</div>
                 </div>
                 <p class="text-gray-400 max-h-20 overflow-y-hidden">${description.slice(0, 70)}...</p>
                 <div class="text-2xl font-bold text-gray-800 mt-2">${price} $</div>
@@ -153,6 +153,16 @@ function setupPagination() {
         paginationContainer.appendChild(pageLink);
     }
 }
+
+function getClassByRate(rating) {
+    if (rating >= 4) {
+      return "bg-green-400";
+    } else if (rating >= 3) {
+      return "bg-yellow-400";
+    } else {
+      return "bg-red-400";
+    }
+  }
 
 // Handle "Back to Categories" functionality
 backButton.addEventListener("click", () => {
