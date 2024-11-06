@@ -85,6 +85,7 @@ async function loadCategoryProducts(category) {
 }
 
 // Display products for the selected page
+
 function showProducts(page) {
     main.innerHTML = ""; // Clear existing products
     const startIndex = (page - 1) * productsPerPage;
@@ -102,29 +103,35 @@ function showProducts(page) {
     }
 
     const productContainer = document.createElement("div");
-    productContainer.className = "flex flex-wrap justify-center gap-4";
+    // Change to CSS Grid with fixed columns and gap
+    productContainer.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4";
 
     productsToShow.forEach((product) => {
         const { title, thumbnail, price, rating, description } = product;
         const productEl = document.createElement("div");
-        productEl.className = "flex flex-col bg-white shadow-lg border-gray-100 border sm:rounded-3xl p-4";
+        // Make each product card a fixed height with proper content distribution
+        productEl.className = "bg-white shadow-lg border border-gray-100 rounded-3xl p-4 h-[500px] flex flex-col";
 
         productEl.innerHTML = `
-            <div class="h-48 overflow-hidden flex items-center justify-center bg-white">
-                <img class="rounded-3xl shadow-lg h-full w-auto object-cover" src="${thumbnail}" alt="">
+            <div class="h-48 overflow-hidden rounded-3xl mb-4 flex-shrink-0">
+                <img class="w-full h-full object-cover" src="${thumbnail}" alt="${title}">
             </div>
-            <div class="flex flex-col mt-4 gap-4">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-bold">${title}</h2>
-                    <div class="${getClassByRate(rating)} bg-green-500 text-white font-bold rounded-xl p-2">${rating}</div>
+            <div class="flex flex-col flex-grow">
+                <div class="flex justify-between items-start mb-2">
+                    <h2 class="text-lg font-bold line-clamp-2">${title}</h2>
+                    <div class="${getClassByRate(rating)} font-bold rounded-xl p-2 ml-2 flex-shrink-0">${rating}</div>
                 </div>
-                <p class="text-gray-400 max-h-20 overflow-y-hidden">${description.slice(0, 70)}...</p>
-                <div class="text-2xl font-bold text-gray-800 mt-2">${price} $</div>
-                <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg">
-                    Add to Cart
-                </button>
-            </div>
-        `;
+                <p class="text-gray-400 line-clamp-3 mb-4">${description}</p>
+                <div class="mt-auto">
+                    <div class="text-2xl font-bold text-gray-800 mb-4">${price} $</div>
+                    <div class="flex items-center justify-between gap-2">
+                        <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
+                            Add to Cart
+                        </button>
+                        <input type="number" value="1" min="1" class="w-16 text-center border border-gray-300 rounded-lg p-2 focus:outline-none" />
+                    </div>
+                </div>
+            </div>`;
         productContainer.appendChild(productEl);
     });
 
