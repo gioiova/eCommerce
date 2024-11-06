@@ -3,13 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style.css">    
+    <link rel="stylesheet" href="./style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Products</title>
   </head>
   <body class="bg-gray-100 flex flex-col min-h-screen">
     <!-- Fixed Header -->
-    <header class="fixed top-0 left-0 right-0 z-10 flex items-center justify-between p-4 bg-white shadow-md">
+    <header
+      class="fixed top-0 left-0 right-0 z-10 flex items-center justify-between p-4 bg-white shadow-md"
+    >
       <div class="w-48">
         <a href="index.html" class="font-bold text-xl">Brand Name</a>
       </div>
@@ -35,12 +37,48 @@
       </div>
     </header>
 
+    <section class="pt-24 bg-gradient-to-r from-blue-500 to-blue-700">
+      <div class="container mx-auto px-6 py-16">
+        <div class="flex flex-col md:flex-row items-center">
+          <div class="md:w-1/2 text-white">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">
+              Discover Amazing Products
+            </h1>
+            <p class="text-xl mb-8">
+              Shop the latest trends and find the perfect items for your
+              lifestyle.
+            </p>
+            <button
+              class="bg-white text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100"
+            >
+              Explore Collection
+            </button>
+          </div>
+          <div class="md:w-1/2 mt-8 md:mt-0">
+            <img
+              src="/api/placeholder/600/400"
+              alt="Hero Image"
+              class="rounded-lg shadow-xl"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Main Content with top padding to account for fixed header -->
     <main class="flex-grow flex flex-col items-center pt-24">
       <h1 class="text-xl font-bold mt-6">The most popular Products</h1>
       <div class="flex flex-wrap justify-center gap-4 mt-8" id="main"></div>
     </main>
 
+    <section id="categories" class="py-16 bg-gray-100">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center mb-12">Shop by Category</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <!-- Categories will be dynamically inserted here -->
+        </div>
+      </div>
+    </section>
     <!-- Pagination Controls -->
     <div id="pagination" class="flex justify-center my-4"></div>
 
