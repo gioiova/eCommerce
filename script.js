@@ -7,7 +7,7 @@ const heroSection = document.getElementById("hero");
 // Removed paginationContainer as it's no longer needed
 // const paginationContainer = document.getElementById("pagination");
 
-const targetCategories = ["mens-watches", "furniture", "groceries", "beauty"];
+const targetCategories = ["mens-watches", "furniture", "skin-care", "beauty"];
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
