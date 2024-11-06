@@ -9,31 +9,33 @@
   </head>
   <body class="bg-gray-100 flex flex-col min-h-screen mt-28">
     <!-- Fixed Header -->
-    <header class="fixed top-0 left-0 right-0 z-10 flex items-center justify-between p-4 bg-white shadow-md">
-      <div class="w-48">
-        <a href="index.html" class="font-bold text-xl"><img src="./logo.svg" alt=""></a>
-      </div>
+    <header
+    class="fixed top-0 left-0 right-0 z-10 flex items-center justify-between p-4 bg-white shadow-md"
+  >
+    <div class="w-48">
+      <a href="index.html" class="font-bold text-xl"><img src="./logo.svg" alt=""></a>
+    </div>
 
-      <div class="absolute left-1/2 transform -translate-x-1/2">
-        <a href="./products.html" class="text-3xl font-semibold">Products</a>
-      </div>
+    <div class="absolute left-1/2 transform -translate-x-1/2">
+      <a href="./products.html" class="text-3xl font-semibold"><img src="./icon.svg" alt="" class="w-100 h-20"></a>
+    </div>
 
-      <div class="flex items-center w-auto max-w-xs">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Search products..."
-          class="border border-gray-300 rounded-lg p-2 w-48 md:w-56"
-        />
-        <button
-          id="searchButton"
-          type="submit"
-          class="ml-2 bg-blue-500 text-white rounded-lg px-3 py-2 whitespace-nowrap"
-        >
-          Search
-        </button>
-      </div>
-    </header>
+    <div class="flex items-center w-auto max-w-xs">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search products..."
+        class="border border-gray-300 rounded-lg p-2 w-48 md:w-56"
+      />
+      <button
+        id="searchButton"
+        type="submit"
+        class="ml-2 bg-blue-500 text-white rounded-lg px-3 py-2 whitespace-nowrap"
+      >
+        Search
+      </button>
+    </div>
+  </header>
 
     <div id="categories" class="flex flex-wrap justify-center gap-4">
     <!-- Category cards will be rendered here -->
@@ -41,12 +43,24 @@
 
 <!-- Product Listing Section (Initially Hidden) -->
 <div id="product-listing" class="hidden">
-    <button id="backButton" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg mb-4">Back to Categories</button>
-    <div id="main" class="flex flex-wrap justify-center gap-4">
+  <button id="backButton" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg mb-4 hover:bg-blue-700">
+    Back to Categories
+  </button>
+      <div id="main" class="flex flex-wrap justify-center gap-4">
         <!-- Products will be displayed here -->
     </div>
     <div id="pagination" class="flex justify-center mt-4"></div>
 </div>
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-r from-blue-500 to-blue-700 text-white  mt-6">
+    <div class=" mx-auto px-6 text-center">
+      <div class="mt-4 text-sm">
+        <p>&copy; 2024 Your Company. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
 
     <script src="./product.js"></script>
 

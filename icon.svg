@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80">
+  <!-- Gradient Definitions -->
+  <defs>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background Design Elements -->
+  <g class="background-elements">
+    <circle cx="40" cy="40" r="3" fill="#3b82f6" opacity="0.3"/>
+    <circle cx="260" cy="40" r="3" fill="#3b82f6" opacity="0.3"/>
+    <circle cx="270" cy="40" r="2" fill="#3b82f6" opacity="0.2"/>
+    <circle cx="280" cy="40" r="1" fill="#3b82f6" opacity="0.1"/>
+  </g>
+
+  <!-- Main Text -->
+  <text x="50%" y="50%" 
+        text-anchor="middle" 
+        dominant-baseline="middle"
+        font-family="Arial, sans-serif" 
+        font-weight="700" 
+        font-size="48" 
+        fill="url(#textGradient)"
+        filter="url(#glow)">
+    Products
+  </text>
+
+  <!-- Decorative Underline -->
+  <path d="M70,55 Q150,65 230,55" 
+        stroke="url(#textGradient)" 
+        stroke-width="2" 
+        fill="none" 
+        opacity="0.5"/>
+
+  <!-- Icon Elements -->
+  <g transform="translate(55, 25)" fill="none" stroke="#3b82f6" stroke-width="2">
+    <rect x="0" y="0" width="12" height="12" rx="2"/>
+  </g>
+  <g transform="translate(230, 25)" fill="none" stroke="#3b82f6" stroke-width="2">
+    <path d="M0,0 L12,0 L14,10 L-2,10 Z"/>
+  </g>
+</svg>
+

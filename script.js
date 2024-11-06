@@ -4,8 +4,8 @@ const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchButton");
 const categoriesSection = document.getElementById("categories");
 const heroSection = document.getElementById("hero");
-// Removed paginationContainer as it's no longer needed
-// const paginationContainer = document.getElementById("pagination");
+
+
 
 const targetCategories = ["mens-watches", "furniture", "skin-care", "beauty"];
 
