@@ -4,8 +4,11 @@ const categoriesSection = document.getElementById("categories");
 const productListingSection = document.getElementById("product-listing");
 const backButton = document.getElementById("backButton");
 const paginationContainer = document.getElementById("pagination");
+const searchInput = document.getElementById("searchInput");
+const searchBtn = document.getElementById("searchButton");
 
 let displayedProducts = [];
+let allProducts = [];
 let currentPage = 1;
 const productsPerPage = 9;
 
@@ -68,6 +71,7 @@ async function loadCategoryProducts(category) {
         const result = await fetch(categoryUrl);
         const data = await result.json();
         displayedProducts = data.products;
+        allProducts = data.products; // Store all products for search functionality
         currentPage = 1;
         showProducts(currentPage);
 
@@ -159,6 +163,31 @@ backButton.addEventListener("click", () => {
 
     // Optionally, you can fetch categories again if needed, or reset the products section
     getCategories();  // To re-fetch and show categories
+});
+
+// Search functionality
+searchBtn.addEventListener("click", () => {
+    const query = searchInput.value.toLowerCase();
+
+    if (query === "") {
+        displayedProducts = [...allProducts]; // Reset to all products if search is empty
+    } else {
+        displayedProducts = allProducts.filter(
+            (product) =>
+                product.title.toLowerCase().includes(query) ||
+                product.description.toLowerCase().includes(query)
+        );
+    }
+
+    currentPage = 1; // Reset to the first page
+    showProducts(currentPage);
+    setupPagination();
+});
+
+searchInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        searchBtn.click(); // Trigger search button click
+    }
 });
 
 // Initialize the page
