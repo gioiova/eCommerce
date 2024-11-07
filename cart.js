@@ -80,6 +80,16 @@ function getCartItemsFromLocalStorage() {
   
   // Initial render of cart items when cart page loads
   renderCartItems();
+
+  const checkoutBtn = document.getElementById("checkoutBtn")
+  console.log(checkoutBtn)
+
+checkoutBtn.addEventListener("click", function() {
+    // Save the total price to localStorage
+    localStorage.setItem("totalPrice", calculateTotal().toFixed(2));
+    // Redirect to checkout page
+    window.location.href = "checkout.html";
+})
   
   // Helper functions
   function updateItemPrice(item, cartItem) {
