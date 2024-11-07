@@ -44,7 +44,8 @@ function showProducts() {
   productContainer.className = "flex flex-wrap justify-center gap-4";
 
   displayedProducts.forEach((product) => {
-    const { id, title, thumbnail, price, rating, description, category } = product;
+    const { id, title, thumbnail, price, rating, description, category } =
+      product;
     const productEl = document.createElement("div");
     productEl.className = `flex flex-col bg-white shadow-lg border-gray-100 border sm:rounded-3xl p-4`;
 
@@ -55,9 +56,14 @@ function showProducts() {
       <div class="flex flex-col mt-4 gap-4">
         <div class="flex justify-between items-center">
           <h2 class="text-lg font-bold">${title}</h2>
-          <div class="${getClassByRate(rating)} font-bold rounded-xl p-2">${rating}</div>
+          <div class="${getClassByRate(
+            rating
+          )} font-bold rounded-xl p-2">${rating}</div>
         </div>
-        <p class="text-gray-400 max-h-20 overflow-y-hidden">${description.slice(0, 70)}...</p>
+        <p class="text-gray-400 max-h-20 overflow-y-hidden">${description.slice(
+          0,
+          70
+        )}...</p>
         <div class="text-2xl font-bold text-gray-800 mt-2">${price} $</div>
         <div class="flex items-center justify-between gap-2 mt-4">
           <button type="submit" class="add-to-cart-btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
@@ -81,9 +87,8 @@ function showProducts() {
     });
 
     productEl.addEventListener("click", () => {
-      window.location.href = `detail.html?id=${id}&category=${category}`;});
-
-      
+      window.location.href = `detail.html?id=${id}&category=${category}`;
+    });
 
     productContainer.appendChild(productEl);
   });
@@ -119,71 +124,71 @@ function updateCartIcon() {
   `;
 }
 
+searchBtn.addEventListener("click", () => {
+  const query = searchInput.value.toLowerCase();
 
+  if (query === "") {
+    displayedProducts = [...allProducts];
+  } else {
+    displayedProducts = allProducts.filter(
+      (product) =>
+        product.title.toLowerCase().includes(query) ||
+        product.description.toLowerCase().includes(query)
+    );
+  }
 
-        searchBtn.addEventListener("click", () => {
-            const query = searchInput.value.toLowerCase();
+  showProducts();
+});
 
-            if (query === "") {
-                displayedProducts = [...allProducts];
-            } else {
-                displayedProducts = allProducts.filter(
-                    (product) =>
-                        product.title.toLowerCase().includes(query) ||
-                        product.description.toLowerCase().includes(query)
-                );
-            }
+searchInput.addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
+    searchBtn.click();
+  }
+});
 
-            showProducts();
-        });
+function getClassByRate(rating) {
+  if (rating >= 4) {
+    return "bg-green-400";
+  } else if (rating >= 3) {
+    return "bg-yellow-400";
+  } else {
+    return "bg-red-400";
+  }
+}
 
-        searchInput.addEventListener("keypress", function (e) {
-            if (e.key === "Enter") {
-                searchBtn.click();
-            }
-        });
+async function getCategories() {
+  try {
+    const result = await fetch(API_URL);
+    const data = await result.json();
 
-        function getClassByRate(rating) {
-            if (rating >= 4) {
-                return "bg-green-400";
-            } else if (rating >= 3) {
-                return "bg-yellow-400";
-            } else {
-                return "bg-red-400";
-            }
+    const categoriesMap = data.products.reduce((acc, product) => {
+      if (targetCategories.includes(product.category)) {
+        if (!acc[product.category]) {
+          acc[product.category] = {
+            name: product.category,
+            image: product.thumbnail,
+          };
         }
+      }
+      return acc;
+    }, {});
 
-        async function getCategories() {
-            try {
-                const result = await fetch(API_URL);
-                const data = await result.json();
+    renderCategories(Object.values(categoriesMap));
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+  }
+}
 
-                const categoriesMap = data.products.reduce((acc, product) => {
-                    if (targetCategories.includes(product.category)) {
-                        if (!acc[product.category]) {
-                            acc[product.category] = {
-                                name: product.category,
-                                image: product.thumbnail,
-                            };
-                        }
-                    }
-                    return acc;
-                }, {});
+function renderCategories(categories) {
+  const categoriesContainer = document.querySelector("#categories .grid");
 
-                renderCategories(Object.values(categoriesMap));
-            } catch (error) {
-                console.error("Error fetching categories:", error);
-            }
-        }
-
-        function renderCategories(categories) {
-            const categoriesContainer = document.querySelector("#categories .grid");
-
-            if (categoriesContainer) {
-                categoriesContainer.innerHTML = categories
-                    .map(
-                        (category) => `
-                            <div class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition-shadow cursor-pointer">
+  if (categoriesContainer) {
+    categoriesContainer.innerHTML = categories
+      .map(
+        (category) => `
+                            <div class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition-shadow cursor-pointer" data-category="${
+                              category.name
+                            }">
                                 <div class="h-48 mb-4 overflow-hidden rounded">
                                     <img 
                                         src="${category.image}" 
@@ -191,18 +196,33 @@ function updateCartIcon() {
                                         class="w-full h-full object-cover"
                                     />
                                 </div>
-                                <h3 class="font-semibold text-lg">${capitalizeFirstLetter(category.name)}</h3>
+                                <h3 class="font-semibold text-lg">${capitalizeFirstLetter(
+                                  category.name
+                                )}</h3>
                             </div>
                         `
-                    )
-                    .join("");
-            }
-        }
+      )
+      .join("");
 
-        document.addEventListener("DOMContentLoaded", () => {
-          const savedCart = localStorage.getItem("cartItems");
-          cartItems = savedCart ? JSON.parse(savedCart) : [];
-          updateCartIcon();
-          getCategories();
+    // Add click event listener to category cards
+    const categoryCards =
+      categoriesContainer.querySelectorAll("[data-category]");
+    categoryCards.forEach((card) => {
+      card.addEventListener("click", (e) => {
+        const categoryName = e.currentTarget.getAttribute("data-category");
+        window.location.href = `products.html?category=${categoryName.toLowerCase()}`;
       });
-      
+    });
+  }
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const savedCart = localStorage.getItem("cartItems");
+  cartItems = savedCart ? JSON.parse(savedCart) : [];
+  updateCartIcon();
+  getCategories();
+});
