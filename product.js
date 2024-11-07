@@ -107,7 +107,7 @@ function showProducts(page) {
     productContainer.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4";
 
     productsToShow.forEach((product) => {
-        const { title, thumbnail, price, rating, description } = product;
+        const {id, title, thumbnail, price, rating, description,category } = product;
         const productEl = document.createElement("div");
         // Make each product card a fixed height with proper content distribution
         productEl.className = "bg-white shadow-lg border border-gray-100 rounded-3xl p-4 h-[500px] flex flex-col";
@@ -132,6 +132,8 @@ function showProducts(page) {
                     </div>
                 </div>
             </div>`;
+            productEl.addEventListener("click", () => {
+                window.location.href = `detail.html?id=${id}&category=${category}`;});
         productContainer.appendChild(productEl);
     });
 

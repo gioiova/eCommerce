@@ -4,6 +4,7 @@ const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchButton");
 const categoriesSection = document.getElementById("categories");
 const heroSection = document.getElementById("hero");
+const exploreBtn = document.getElementById("exploreBtn")
 
 
 
@@ -23,6 +24,8 @@ async function getProducts(url) {
   displayedProducts = [...allProducts]; // Initialize displayed products with all products
   showProducts(); // Display products without pagination
 }
+
+
 
 getProducts(API_URL);
 
@@ -49,7 +52,7 @@ function showProducts() {
     displayedProducts.length <= 2 ? "w-100" : "w-full sm:w-1/2 lg:w-1/4";
 
   displayedProducts.forEach((product) => {
-    const { id, title, thumbnail, price, rating, description } = product;
+    const { id, title, thumbnail, price, rating, description,category } = product;
     const productEl = document.createElement("div");
     productEl.className = `flex flex-col bg-white shadow-lg border-gray-100 border sm:rounded-3xl p-4 ${widthClass}`; // Apply dynamic width class
 
@@ -71,6 +74,9 @@ function showProducts() {
           <input type="number" value="1" min="1" class="w-16 text-center border border-gray-300 rounded-lg p-2 focus:outline-none" />
         </div>
       </div>`;
+
+      productEl.addEventListener("click", () => {
+        window.location.href = `detail.html?id=${id}&category=${category}`;      });
 
     productContainer.appendChild(productEl);
   });
@@ -135,6 +141,8 @@ async function getCategories() {
   }
 }
 
+
+
 // Function to render the categories
 function renderCategories(categories) {
   const categoriesContainer = document.querySelector("#categories .grid");
@@ -167,6 +175,10 @@ function renderCategories(categories) {
     });
   }
 }
+
+exploreBtn.addEventListener("click",() => {
+  window.location.href = `products.html?`
+})
 
 // Initialize the page
 document.addEventListener("DOMContentLoaded", () => {
