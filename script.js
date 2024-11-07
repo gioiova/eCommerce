@@ -4,9 +4,8 @@ const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchButton");
 const categoriesSection = document.getElementById("categories");
 const heroSection = document.getElementById("hero");
-const exploreBtn = document.getElementById("exploreBtn")
-
-
+const exploreBtn = document.getElementById("exploreBtn");
+const cartIcon = document.getElementById("cart-icon");
 
 const targetCategories = ["mens-watches", "furniture", "skin-care", "beauty"];
 
@@ -16,6 +15,7 @@ function capitalizeFirstLetter(string) {
 
 let allProducts = []; // Array to hold all products
 let displayedProducts = []; // Array to hold products currently displayed
+let cartItems = []; // Array to hold cart items
 
 async function getProducts(url) {
   const result = await fetch(url);
@@ -25,15 +25,12 @@ async function getProducts(url) {
   showProducts(); // Display products without pagination
 }
 
-
-
 getProducts(API_URL);
 
 function showProducts() {
   main.innerHTML = ""; // Clear existing products
 
   if (displayedProducts.length === 0) {
-    // Display a "Product not found" message if no products match the search
     main.innerHTML = `
       <div class="not-found-message flex flex-col items-center justify-center text-center p-6 bg-white rounded-lg shadow-md">
         <h2 class="text-2xl font-semibold text-gray-700 mb-2">No products found</h2>
@@ -43,21 +40,16 @@ function showProducts() {
     return;
   }
 
-  // Create a container for products
   const productContainer = document.createElement("div");
-  productContainer.className = "flex flex-wrap justify-center gap-4"; // Use Flexbox classes
-
-  // Determine width class based on the number of products
-  const widthClass =
-    displayedProducts.length <= 2 ? "w-100" : "w-full sm:w-1/2 lg:w-1/4";
+  productContainer.className = "flex flex-wrap justify-center gap-4";
 
   displayedProducts.forEach((product) => {
-    const { id, title, thumbnail, price, rating, description,category } = product;
+    const { id, title, thumbnail, price, rating, description, category } = product;
     const productEl = document.createElement("div");
-    productEl.className = `flex flex-col bg-white shadow-lg border-gray-100 border sm:rounded-3xl p-4 ${widthClass}`; // Apply dynamic width class
+    productEl.className = `flex flex-col bg-white shadow-lg border-gray-100 border sm:rounded-3xl p-4`;
 
     productEl.innerHTML = `
-      <div class="h-48  overflow-hidden flex items-center justify-center bg-white">
+      <div class="h-48 overflow-hidden flex items-center justify-center bg-white">
         <img class="rounded-3xl shadow-lg h-full w-auto object-cover" src="${thumbnail}" alt="">
       </div>
       <div class="flex flex-col mt-4 gap-4">
@@ -68,119 +60,145 @@ function showProducts() {
         <p class="text-gray-400 max-h-20 overflow-y-hidden">${description.slice(0, 70)}...</p>
         <div class="text-2xl font-bold text-gray-800 mt-2">${price} $</div>
         <div class="flex items-center justify-between gap-2 mt-4">
-          <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
+          <button type="submit" class="add-to-cart-btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
             Add to Cart
           </button>
-          <input type="number" value="1" min="1" class="w-16 text-center border border-gray-300 rounded-lg p-2 focus:outline-none" />
+          <input type="number" value="1" min="1" class="quantity-input w-16 text-center border border-gray-300 rounded-lg p-2 focus:outline-none" />
         </div>
       </div>`;
 
-      productEl.addEventListener("click", () => {
-        window.location.href = `detail.html?id=${id}&category=${category}`;      });
+    const addToCartBtn = productEl.querySelector(".add-to-cart-btn");
+    const quantityInput = productEl.querySelector(".quantity-input");
+
+    addToCartBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const quantity = parseInt(quantityInput.value);
+      addToCart({ id, title, thumbnail, price, quantity });
+    });
+
+  
+
+    productEl.addEventListener("click", () => {
+      window.location.href = `detail.html?id=${id}&category=${category}`;});
 
     productContainer.appendChild(productEl);
   });
 
-  main.appendChild(productContainer); // Append the container with all products to the main div
+  main.appendChild(productContainer);
 }
 
-searchBtn.addEventListener("click", () => {
-  const query = searchInput.value.toLowerCase();
-
-  if (query === "") {
-    displayedProducts = [...allProducts]; // Reset to all products if search is empty
+function addToCart(product) {
+  const existingProduct = cartItems.find((item) => item.id === product.id);
+  if (existingProduct) {
+    existingProduct.quantity += product.quantity;
   } else {
-    displayedProducts = allProducts.filter(
-      (product) =>
-        product.title.toLowerCase().includes(query) ||
-        product.description.toLowerCase().includes(query)
-    );
+    cartItems.push(product);
   }
-
-  showProducts(); // Show filtered products
-});
-
-searchInput.addEventListener("keypress", function (e) {
-  if (e.key === "Enter") {
-    searchBtn.click(); // Trigger search button click
-  }
-});
-
-function getClassByRate(rating) {
-  if (rating >= 4) {
-    return "bg-green-400";
-  } else if (rating >= 3) {
-    return "bg-yellow-400";
-  } else {
-    return "bg-red-400";
-  }
+  saveCartItemsToLocalStorage(); // Save to localStorage after updating cart
+  updateCartIcon();
 }
 
-async function getCategories() {
-  try {
-    const result = await fetch(API_URL);
-    const data = await result.json();
+function saveCartItemsToLocalStorage() {
+  localStorage.setItem("cartItems", JSON.stringify(cartItems));
+}
 
-    // Group products by category
-    const categoriesMap = data.products.reduce((acc, product) => {
-      if (targetCategories.includes(product.category)) {
-        if (!acc[product.category]) {
-          acc[product.category] = {
-            name: product.category,
-            image: product.thumbnail,
-          };
+function updateCartIcon() {
+  let totalItems = 0;
+  cartItems.forEach((item) => {
+    totalItems += item.quantity;
+  });
+  cartIcon.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+    </svg>
+    <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">${totalItems}</span>
+  `;
+}
+
+
+
+        searchBtn.addEventListener("click", () => {
+            const query = searchInput.value.toLowerCase();
+
+            if (query === "") {
+                displayedProducts = [...allProducts];
+            } else {
+                displayedProducts = allProducts.filter(
+                    (product) =>
+                        product.title.toLowerCase().includes(query) ||
+                        product.description.toLowerCase().includes(query)
+                );
+            }
+
+            showProducts();
+        });
+
+        searchInput.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                searchBtn.click();
+            }
+        });
+
+        function getClassByRate(rating) {
+            if (rating >= 4) {
+                return "bg-green-400";
+            } else if (rating >= 3) {
+                return "bg-yellow-400";
+            } else {
+                return "bg-red-400";
+            }
         }
-      }
-      return acc;
-    }, {});
 
-    // Convert to array and render
-    renderCategories(Object.values(categoriesMap));
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-  }
-}
+        async function getCategories() {
+            try {
+                const result = await fetch(API_URL);
+                const data = await result.json();
 
+                const categoriesMap = data.products.reduce((acc, product) => {
+                    if (targetCategories.includes(product.category)) {
+                        if (!acc[product.category]) {
+                            acc[product.category] = {
+                                name: product.category,
+                                image: product.thumbnail,
+                            };
+                        }
+                    }
+                    return acc;
+                }, {});
 
+                renderCategories(Object.values(categoriesMap));
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        }
 
-// Function to render the categories
-function renderCategories(categories) {
-  const categoriesContainer = document.querySelector("#categories .grid");
+        function renderCategories(categories) {
+            const categoriesContainer = document.querySelector("#categories .grid");
 
-  if (categoriesContainer) {
-    categoriesContainer.innerHTML = categories
-      .map(
-        (category) => `
-            <div class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition-shadow cursor-pointer">
-                <div class="h-48 mb-4 overflow-hidden rounded">
-                    <img 
-                        src="${category.image}" 
-                        alt="${category.name}" 
-                        class="w-full h-full object-cover"
-                    />
-                </div>
-                <h3 class="font-semibold text-lg">${capitalizeFirstLetter(category.name)}</h3>
-            </div>
-        `
-      )
-      .join("");
+            if (categoriesContainer) {
+                categoriesContainer.innerHTML = categories
+                    .map(
+                        (category) => `
+                            <div class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition-shadow cursor-pointer">
+                                <div class="h-48 mb-4 overflow-hidden rounded">
+                                    <img 
+                                        src="${category.image}" 
+                                        alt="${category.name}" 
+                                        class="w-full h-full object-cover"
+                                    />
+                                </div>
+                                <h3 class="font-semibold text-lg">${capitalizeFirstLetter(category.name)}</h3>
+                            </div>
+                        `
+                    )
+                    .join("");
+            }
+        }
 
-    // Add click handlers to category cards
-    const categoryCards = categoriesContainer.querySelectorAll(".bg-white");
-    categoryCards.forEach((card, index) => {
-      card.addEventListener("click", () => {
-        // Redirect to products.html with the category name in the URL
-        window.location.href = `products.html?category=${categories[index].name}`;
+        document.addEventListener("DOMContentLoaded", () => {
+          const savedCart = localStorage.getItem("cartItems");
+          cartItems = savedCart ? JSON.parse(savedCart) : [];
+          updateCartIcon();
+          getCategories();
       });
-    });
-  }
-}
-
-exploreBtn.addEventListener("click",() => {
-  window.location.href = `products.html?`
-})
-
-// Initialize the page
-document.addEventListener("DOMContentLoaded", () => {
-  getCategories();
-});
+      
