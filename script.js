@@ -76,10 +76,14 @@ function showProducts() {
       addToCart({ id, title, thumbnail, price, quantity });
     });
 
-  
+    quantityInput.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
 
     productEl.addEventListener("click", () => {
       window.location.href = `detail.html?id=${id}&category=${category}`;});
+
+      
 
     productContainer.appendChild(productEl);
   });
