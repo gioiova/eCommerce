@@ -13,6 +13,7 @@ let displayedProducts = [];
 let allProducts = [];
 let currentPage = 1;
 const productsPerPage = 9;
+let cartItems = [];
 
 // Utility function to capitalize the first letter
 function capitalizeFirstLetter(str) {
