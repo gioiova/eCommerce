@@ -1,13 +1,13 @@
-// Function to get cart items from localStorage
+//  get cart items from localStorage
 function getCartItemsFromLocalStorage() {
     const savedCartItems = localStorage.getItem("cartItems");
     return savedCartItems ? JSON.parse(savedCartItems) : [];
   }
   
-  // Load cart items from localStorage
-  let cartItems = getCartItemsFromLocalStorage(); // This will get the latest cart items
   
-  // Function to render cart items
+  let cartItems = getCartItemsFromLocalStorage(); 
+  
+  
   function renderCartItems() {
     const cartItemsContainer = document.getElementById("cart-items");
     cartItemsContainer.innerHTML = "";
@@ -39,7 +39,7 @@ function getCartItemsFromLocalStorage() {
         </div>
       `;
   
-      // Adding event listeners for decreasing, increasing and deleting items
+      
       const decreaseBtn = cartItem.querySelector(".decrease-btn");
       const increaseBtn = cartItem.querySelector(".increase-btn");
       const quantityInput = cartItem.querySelector(".quantity-input");
@@ -51,7 +51,7 @@ function getCartItemsFromLocalStorage() {
           quantityInput.value = item.quantity;
           updateItemPrice(item, cartItem);
           updateTotal(calculateTotal());
-          saveCartItemsToLocalStorage(); // Save to localStorage
+          saveCartItemsToLocalStorage();
         }
       });
   
@@ -60,14 +60,14 @@ function getCartItemsFromLocalStorage() {
         quantityInput.value = item.quantity;
         updateItemPrice(item, cartItem);
         updateTotal(calculateTotal());
-        saveCartItemsToLocalStorage(); // Save to localStorage
+        saveCartItemsToLocalStorage(); 
       });
   
       deleteBtn.addEventListener("click", () => {
         cartItems.splice(index, 1);
         renderCartItems();
         updateTotal(calculateTotal());
-        saveCartItemsToLocalStorage(); // Save to localStorage after removing the item
+        saveCartItemsToLocalStorage(); 
       });
   
       cartItemsContainer.appendChild(cartItem);
@@ -85,13 +85,13 @@ function getCartItemsFromLocalStorage() {
   console.log(checkoutBtn)
 
 checkoutBtn.addEventListener("click", function() {
-    // Save the total price to localStorage
+    
     localStorage.setItem("totalPrice", calculateTotal().toFixed(2));
     // Redirect to checkout page
     window.location.href = "checkout.html";
 })
   
-  // Helper functions
+ 
   function updateItemPrice(item, cartItem) {
     const itemPriceElement = cartItem.querySelector(".item-price");
     itemPriceElement.textContent = `$${(item.price * item.quantity).toFixed(2)}`;

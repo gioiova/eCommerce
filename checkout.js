@@ -7,5 +7,4 @@ function displayTotalPrice() {
     }
   }
 
-  // Call the function to display the total price
   displayTotalPrice();

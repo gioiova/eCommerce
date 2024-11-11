@@ -3,26 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./src/styles/style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Products</title>
   </head>
   <body class="bg-gray-100 flex flex-col min-h-screen mt-28">
-    <!-- Fixed Header -->
     <header class="fixed top-0 left-0 right-0 z-10 flex items-center justify-between p-4 bg-white shadow-md">
-      <!-- Logo - visible on all screens -->
       <div class="w-48 sm:block">
-        <a href="index.html" class="font-bold text-xl"><img src="./logo.svg" alt=""></a>
+        <a href="index.html" class="font-bold text-xl"><img src="./src/img/logo.svg" alt=""></a>
       </div>
       
-      <!-- Center icon - hidden on mobile -->
       <div class="hidden sm:block absolute left-1/2 transform -translate-x-1/2">
-        <a href="./products.html" class="text-3xl font-semibold"><img src="./icon.svg" alt="" class="w-100 h-20"></a>
+        <a href="./products.html" class="text-3xl font-semibold"><img src="./src/img/icon.svg" alt="" class="w-100 h-20"></a>
       </div>
     
-      <!-- Search and Cart Section -->
       <div class="flex items-center">
-        <!-- Search Section -->
         <div class="flex items-center">
           <input
             type="text"
@@ -37,7 +32,6 @@
           >
             Search
           </button>
-          <!-- Mobile Search Icon -->
           <button
             id="mobileSearchButton"
             type="submit"
@@ -48,20 +42,18 @@
             </svg>
           </button>
         </div>
-        <!-- Cart Icon -->
         <a href="cart.html" class="ml-4 relative">
           <div id="cart-icon" class="relative w-8 h-8">
-            <!-- Cart icon with badge will be inserted here -->
           </div>
         </a>
       </div>
     </header>
 
     <div id="categories" class="flex flex-wrap justify-center gap-4">
-      <!-- Category cards will be rendered here -->
+      <!-- Category cards -->
     </div>
 
-    <!-- Product Listing Section (Initially Hidden) -->
+    <!-- Product Listing Section -->
     <div id="product-listing" class="hidden">
       <button
         id="backButton"
@@ -86,26 +78,5 @@
 
     <script src="./product.js"></script>
 
-    <style>
-      .pagination-button {
-        margin: 0 5px;
-        padding: 5px 10px;
-        border: none;
-        background-color: #007bff;
-        color: white;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-      }
-
-      .pagination-button:hover {
-        background-color: #0056b3;
-      }
-
-      .pagination-button.active {
-        background-color: #0056b3;
-        font-weight: bold;
-      }
-    </style>
   </body>
 </html>

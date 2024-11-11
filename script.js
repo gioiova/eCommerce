@@ -14,16 +14,17 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-let allProducts = []; // Array to hold all products
-let displayedProducts = []; // Array to hold products currently displayed
-let cartItems = []; // Array to hold cart items
+let allProducts = []; 
+let displayedProducts = []; 
+let cartItems = []; 
+
 
 async function getProducts(url) {
   const result = await fetch(url);
   const data = await result.json();
-  allProducts = data.products.filter((product) => product.rating > 4.9); // Filter products with rating > 4
-  displayedProducts = [...allProducts]; // Initialize displayed products with all products
-  showProducts(); // Display products without pagination
+  allProducts = data.products.filter((product) => product.rating > 4.9); 
+  displayedProducts = [...allProducts];
+  showProducts(); // Display products
 }
 
 getProducts(API_URL);

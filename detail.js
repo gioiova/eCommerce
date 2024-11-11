@@ -2,15 +2,15 @@ const main = document.getElementById("main");
 const relatedSection = document.getElementById("related-products");
 const cartIcon = document.getElementById("cart-icon");
 
-let cartItems = []; // Initialize cart items array
+let cartItems = [];
 
-// Function to initialize product details and related products
+//initialize product details and related products
 async function initProductPage() {
   const urlParams = new URLSearchParams(window.location.search);
   const productId = urlParams.get("id");
   const category = urlParams.get("category");
 
-  main.innerHTML = ""; // Clear previous product details
+  main.innerHTML = "";
   await getProductDetails(productId);
   await getRelatedProducts(category);
 }
@@ -55,12 +55,11 @@ function displayProduct(product) {
         </div>
       </div>`;
 
-  // Add event listener to the "Add to Cart" button
   const addToCartBtn = productEl.querySelector(".add-to-cart-btn");
   const quantityInput = productEl.querySelector(".quantity-input");
 
   addToCartBtn.addEventListener("click", (e) => {
-    e.stopPropagation(); // Prevent event propagation
+    e.stopPropagation(); 
     const quantity = parseInt(quantityInput.value);
     addToCart({ id, title, thumbnail, price, quantity });
   });
@@ -84,19 +83,25 @@ function getClassByRate(rating) {
 
 // Fetch related products by category
 async function getRelatedProducts(category) {
-  const response = await fetch(`https://dummyjson.com/products/category/${category}`);
+  const response = await fetch(
+    `https://dummyjson.com/products/category/${category}`
+  );
   const data = await response.json();
   const urlParams = new URLSearchParams(window.location.search);
 
   const productId = urlParams.get("id");
 
-  const relatedProducts = data.products.filter((p) => p.id !== parseInt(productId)).slice(0, 4);
+  const relatedProducts = data.products
+    .filter((p) => p.id !== parseInt(productId))
+    .slice(0, 4);
   displayRelatedProducts(relatedProducts);
 }
 
 // Display related products
 function displayRelatedProducts(relatedProducts) {
-  relatedSection.innerHTML = relatedProducts.map(product => `
+  relatedSection.innerHTML = relatedProducts
+    .map(
+      (product) => `
       <a href="detail.html?id=${product.id}&category=${product.category}" class="flex flex-col bg-white shadow-lg border-gray-100 border sm:rounded-3xl p-4 w-60">
         <div class="h-48 overflow-hidden flex items-center justify-center bg-white">
           <img class="rounded-3xl shadow-lg h-full w-auto object-cover" src="${product.thumbnail}" alt="${product.title}">
@@ -106,10 +111,12 @@ function displayRelatedProducts(relatedProducts) {
           <p class="text-2xl font-semibold text-gray-800">${product.price} $</p>
         </div>
       </a>
-    `).join('');
+    `
+    )
+    .join("");
 
-  // Add event listener for related product links
-  relatedSection.querySelectorAll("a").forEach(link => {
+  
+  relatedSection.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", (event) => {
       event.preventDefault();
       const url = new URL(link.href);
@@ -119,7 +126,7 @@ function displayRelatedProducts(relatedProducts) {
   });
 }
 
-// Function to add a product to the cart
+
 function addToCart(product) {
   const existingProduct = cartItems.find((item) => item.id === product.id);
   if (existingProduct) {
@@ -127,16 +134,16 @@ function addToCart(product) {
   } else {
     cartItems.push(product);
   }
-  saveCartItemsToLocalStorage(); // Save to localStorage after updating cart
+  saveCartItemsToLocalStorage(); 
   updateCartIcon();
 }
 
-// Function to save cart items to localStorage
+
 function saveCartItemsToLocalStorage() {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
 }
 
-// Function to update the cart icon
+
 function updateCartIcon() {
   let totalItems = 0;
   cartItems.forEach((item) => {

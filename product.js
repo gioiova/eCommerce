@@ -15,7 +15,6 @@ let currentPage = 1;
 const productsPerPage = 9;
 let cartItems = [];
 
-// Utility function to capitalize the first letter
 function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -118,7 +117,7 @@ function showProducts(page) {
   }
 
   const productContainer = document.createElement("div");
-  // Change to CSS Grid with fixed columns and gap
+  
   productContainer.className =
     "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4";
 
@@ -126,7 +125,7 @@ function showProducts(page) {
     const { id, title, thumbnail, price, rating, description, category } =
       product;
     const productEl = document.createElement("div");
-    // Make each product card a fixed height with proper content distribution
+    
     productEl.className =
       "bg-white shadow-lg border border-gray-100 rounded-3xl p-4 h-[500px] flex flex-col";
 
@@ -237,15 +236,13 @@ function getClassByRate(rating) {
   }
 }
 
-// Handle "Back to Categories" functionality
+
 backButton.addEventListener("click", () => {
   categoriesSection.classList.remove("hidden");
   productListingSection.classList.add("hidden");
-  // Update the URL to products.html without the category query parameter
   window.history.pushState({}, "", "products.html");
 
-  // Optionally, you can fetch categories again if needed, or reset the products section
-  getCategories(); // To re-fetch and show categories
+    getCategories(); 
 });
 
 // Search functionality
@@ -269,7 +266,7 @@ searchBtn.addEventListener("click", () => {
 
 searchInput.addEventListener("keypress", function (e) {
   if (e.key === "Enter") {
-    searchBtn.click(); // Trigger search button click
+    searchBtn.click(); 
   }
 });
 
@@ -282,8 +279,8 @@ document.addEventListener("DOMContentLoaded", () => {
   cartItems = savedCart ? JSON.parse(savedCart) : [];
   updateCartIcon();
   if (categoryParam) {
-    loadCategoryProducts(categoryParam); // Load the selected category
+    loadCategoryProducts(categoryParam); 
   } else {
-    getCategories(); // Load categories if no category is specified
+    getCategories(); 
   }
 });

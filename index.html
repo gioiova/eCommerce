@@ -3,26 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./src/styles/style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Products</title>
   </head>
   <body class="bg-gray-100 flex flex-col min-h-screen  " >
         
     <header class="fixed top-0 left-0 right-0 z-10 flex items-center justify-between p-4 bg-white shadow-md">
-      <!-- Logo - visible on all screens -->
       <div class="w-48 sm:block">
-        <a href="index.html" class="font-bold text-xl"><img src="./logo.svg" alt=""></a>
+        <a href="index.html" class="font-bold text-xl"><img src="./src/img/logo.svg" alt=""></a>
       </div>
       
-      <!-- Center icon - hidden on mobile -->
       <div class="hidden sm:block absolute left-1/2 transform -translate-x-1/2">
-        <a href="./products.html" class="text-3xl font-semibold"><img src="./icon.svg" alt="" class="w-100 h-20"></a>
+        <a href="./products.html" class="text-3xl font-semibold"><img src="./src/img/icon.svg" alt="" class="w-100 h-20"></a>
       </div>
     
-      <!-- Search and Cart Section -->
       <div class="flex items-center">
-        <!-- Search Section -->
         <div class="flex items-center">
           <input
             type="text"
@@ -37,7 +33,6 @@
           >
             Search
           </button>
-          <!-- Mobile Search Icon -->
           <button
             id="mobileSearchButton"
             type="submit"
@@ -48,7 +43,6 @@
             </svg>
           </button>
         </div>
-        <!-- Cart Icon -->
         <a href="cart.html" class="ml-4 relative">
           <div id="cart-icon" class="relative w-8 h-8">
             <!-- Cart icon with badge will be inserted here -->
@@ -79,7 +73,7 @@
           </div>
           <div class="md:w-1/2 mt-8 md:mt-0">
             <img
-              src="./hero.svg"
+              src="./src/img/hero.svg"
               alt="Hero Image"
               class="rounded-lg shadow-xl"
             />
@@ -88,9 +82,9 @@
       </div>
     </section>
 
-    <!-- Main Content with top padding to account for fixed header -->
+    <!-- Main Content -->
     <main class="flex-grow flex flex-col items-center pt-24">
-      <img class="w-68 h-28" src="./popular.svg" alt="">
+      <img class="w-68 h-28" src="./src/img/popular.svg" alt="">
       <div class="flex flex-wrap justify-center gap-4 mt-8" id="main"></div>
 
       
@@ -99,7 +93,7 @@
     <section id="categories" class="py-16 ">
       <div class="container mx-auto px-6">
         <div class="flex justify-center">
-              <img class="w-68 h-28" src="./category.svg" alt="">
+              <img class="w-68 h-28" src="./src/img/category.svg" alt="">
             </div>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
           <!-- Categories will be dynamically inserted here -->
@@ -119,26 +113,6 @@
 
     <script src="./script.js"></script>
 
-    <style>
-      .pagination-button {
-        margin: 0 5px;
-        padding: 5px 10px;
-        border: none;
-        background-color: #007bff;
-        color: white;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-      }
-
-      .pagination-button:hover {
-        background-color: #0056b3;
-      }
-
-      .pagination-button.active {
-        background-color: #0056b3;
-        font-weight: bold;
-      }
-    </style>
+    
   </body>
 </html>
