@@ -3,37 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style.css">    
+    <link rel="stylesheet" href="./style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Products</title>
   </head>
   <body class="bg-gray-100 flex flex-col min-h-screen mt-28">
     <!-- Fixed Header -->
     <header class="fixed top-0 left-0 right-0 z-10 flex items-center justify-between p-4 bg-white shadow-md">
-      <div class="w-48">
+      <!-- Logo - visible on all screens -->
+      <div class="w-48 sm:block">
         <a href="index.html" class="font-bold text-xl"><img src="./logo.svg" alt=""></a>
       </div>
-
       
-    <div class="absolute left-1/2 transform -translate-x-1/2">
-      <a href="./products.html" class="text-3xl font-semibold"><img src="./icon.svg" alt="" class="w-100 h-20"></a>
-    </div>
+      <!-- Center icon - hidden on mobile -->
+      <div class="hidden sm:block absolute left-1/2 transform -translate-x-1/2">
+        <a href="./products.html" class="text-3xl font-semibold"><img src="./icon.svg" alt="" class="w-100 h-20"></a>
+      </div>
+    
+      <!-- Search and Cart Section -->
       <div class="flex items-center">
+        <!-- Search Section -->
         <div class="flex items-center">
           <input
             type="text"
             id="searchInput"
             placeholder="Search products..."
-            class="border border-gray-300 rounded-lg p-2 w-48 md:w-56"
+            class="border border-gray-300 rounded-lg p-2 w-32 sm:w-48 md:w-56"
           />
           <button
             id="searchButton"
             type="submit"
-            class="ml-2 bg-blue-500 text-white rounded-lg px-3 py-2 whitespace-nowrap"
+            class="ml-2 bg-blue-500 text-white rounded-lg px-3 py-2 whitespace-nowrap hidden sm:block"
           >
             Search
           </button>
+          <!-- Mobile Search Icon -->
+          <button
+            id="mobileSearchButton"
+            type="submit"
+            class="ml-2 bg-blue-500 text-white rounded-lg p-2 sm:hidden"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+            </svg>
+          </button>
         </div>
+        <!-- Cart Icon -->
         <a href="cart.html" class="ml-4 relative">
           <div id="cart-icon" class="relative w-8 h-8">
             <!-- Cart icon with badge will be inserted here -->
@@ -42,31 +57,32 @@
       </div>
     </header>
 
-
     <div id="categories" class="flex flex-wrap justify-center gap-4">
-    <!-- Category cards will be rendered here -->
-</div>
+      <!-- Category cards will be rendered here -->
+    </div>
 
-<!-- Product Listing Section (Initially Hidden) -->
-<div id="product-listing" class="hidden">
-  <button id="backButton" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg mb-4 hover:bg-blue-700">
-    Back to Categories
-  </button>
+    <!-- Product Listing Section (Initially Hidden) -->
+    <div id="product-listing" class="hidden">
+      <button
+        id="backButton"
+        class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg mb-4 hover:bg-blue-700"
+      >
+        Back to Categories
+      </button>
       <div id="main" class="flex flex-wrap justify-center gap-4">
         <!-- Products will be displayed here -->
-    </div>
-    <div id="pagination" class="flex justify-center mt-4"></div>
-</div>
-
-  <!-- Footer -->
-  <footer class="bg-gradient-to-r from-blue-500 to-blue-700 text-white  mt-6">
-    <div class=" mx-auto px-6 text-center">
-      <div class="mt-4 text-sm">
-        <p>&copy; 2024 Your Company. All Rights Reserved.</p>
       </div>
+      <div id="pagination" class="flex justify-center mt-4"></div>
     </div>
-  </footer>
 
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-blue-500 to-blue-700 text-white mt-6">
+      <div class="mx-auto px-6 text-center">
+        <div class="mt-4 text-sm">
+          <p>&copy; 2024 Your Company. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
 
     <script src="./product.js"></script>
 

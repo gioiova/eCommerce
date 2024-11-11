@@ -7,6 +7,7 @@ const heroSection = document.getElementById("hero");
 const exploreBtn = document.getElementById("exploreBtn");
 const cartIcon = document.getElementById("cart-icon");
 
+
 const targetCategories = ["mens-watches", "furniture", "skin-care", "beauty"];
 
 function capitalizeFirstLetter(string) {
@@ -95,6 +96,10 @@ function showProducts() {
 
   main.appendChild(productContainer);
 }
+
+exploreBtn.addEventListener("click",() => {
+  window.location.href = `products.html`
+})
 
 function addToCart(product) {
   const existingProduct = cartItems.find((item) => item.id === product.id);
