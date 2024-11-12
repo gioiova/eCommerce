@@ -8,16 +8,16 @@ let cartItems = getCartItemsFromLocalStorage();
 
 function renderCartItems() {
   const cartItemsContainer = document.getElementById("cart-items");
-  const orderSummary = document.getElementById("orderSummary") 
+  const orderSummary = document.getElementById("orderSummary");
   cartItemsContainer.innerHTML = "";
 
   let total = 0;
 
   if (cartItems.length === 0) {
-      // Create empty cart message with link
-      const emptyCartMessage = document.createElement("div");
-      emptyCartMessage.className = "col-span-full text-center py-12";
-      emptyCartMessage.innerHTML = `
+    // Create empty cart message with link
+    const emptyCartMessage = document.createElement("div");
+    emptyCartMessage.className = "col-span-full text-center py-12";
+    emptyCartMessage.innerHTML = `
           <p class="text-2xl font-bold text-gray-400 mb-4">Your cart is empty</p>
           <a href="products.html" class="inline-flex items-center text-blue-500 hover:text-blue-700 font-semibold text-lg">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -26,31 +26,37 @@ function renderCartItems() {
               Back to Products
           </a>
       `;
-      cartItemsContainer.appendChild(emptyCartMessage);
-      
-      if (orderSummary) {
-          orderSummary.style.display = "none";
-      }
-  } else {
-      if (orderSummary) {
-          orderSummary.style.display = "flex";
-      }
+    cartItemsContainer.appendChild(emptyCartMessage);
 
-      cartItems.forEach((item, index) => {
-          const cartItem = document.createElement("div");
-          cartItem.className = "bg-white rounded-lg shadow-lg p-4";
-          cartItem.innerHTML = `
+    if (orderSummary) {
+      orderSummary.style.display = "none";
+    }
+  } else {
+    if (orderSummary) {
+      orderSummary.style.display = "flex";
+    }
+
+    cartItems.forEach((item, index) => {
+      const cartItem = document.createElement("div");
+      cartItem.className = "bg-white rounded-lg shadow-lg p-4";
+      cartItem.innerHTML = `
               <div class="flex items-center mb-2">
-                  <img src="${item.thumbnail}" alt="${item.title}" class="w-16 h-16 object-cover rounded-lg mr-4">
+                  <img src="${item.thumbnail}" alt="${
+        item.title
+      }" class="w-16 h-16 object-cover rounded-lg mr-4">
                   <div>
                       <h3 class="text-lg font-bold">${item.title}</h3>
-                      <p class="item-price text-gray-500">$${(item.price * item.quantity).toFixed(2)}</p>
+                      <p class="item-price text-gray-500">$${(
+                        item.price * item.quantity
+                      ).toFixed(2)}</p>
                   </div>
               </div>
               <div class="flex justify-between items-center">
                   <div class="flex items-center">
                       <button class="decrease-btn bg-gray-200 text-gray-700 px-2 py-1 rounded-l-lg hover:bg-gray-300">-</button>
-                      <input type="number" min="1" value="${item.quantity}" class="quantity-input w-16 text-center border-t border-b border-gray-300 focus:outline-none">
+                      <input type="number" min="1" value="${
+                        item.quantity
+                      }" class="quantity-input w-16 text-center border-t border-b border-gray-300 focus:outline-none">
                       <button class="increase-btn bg-gray-200 text-gray-700 px-2 py-1 rounded-r-lg hover:bg-gray-300">+</button>
                   </div>
                   <button class="delete-btn text-red-500 hover:text-red-600">
@@ -61,66 +67,61 @@ function renderCartItems() {
               </div>
           `;
 
-          const decreaseBtn = cartItem.querySelector(".decrease-btn");
-          const increaseBtn = cartItem.querySelector(".increase-btn");
-          const quantityInput = cartItem.querySelector(".quantity-input");
-          const deleteBtn = cartItem.querySelector(".delete-btn");
-          
-          // Handle manual quantity input
-          quantityInput.addEventListener("input", function(e) {
-              let value = this.value.replace(/[^\d]/g, '');
-              value = parseInt(value) || 1;
-              if (value > 50) value = 50;
-              if (value < 1) value = 1;
-              this.value = value;
-              
-              // Update item quantity
-              item.quantity = value;
-              updateItemPrice(item, cartItem);
-              updateTotal(calculateTotal());
-              saveCartItemsToLocalStorage();
-          });
-          
-          // Prevent non-numeric input
-          quantityInput.addEventListener("keypress", function(e) {
-              if (!/^\d$/.test(e.key)) {
-                  e.preventDefault();
-              }
-          });
+      const decreaseBtn = cartItem.querySelector(".decrease-btn");
+      const increaseBtn = cartItem.querySelector(".increase-btn");
+      const quantityInput = cartItem.querySelector(".quantity-input");
+      const deleteBtn = cartItem.querySelector(".delete-btn");
 
-          // Decrease quantity
-          decreaseBtn.addEventListener("click", () => {
-              if (item.quantity > 1) {
-                  item.quantity--;
-                  quantityInput.value = item.quantity;
-                  updateItemPrice(item, cartItem);
-                  updateTotal(calculateTotal());
-                  saveCartItemsToLocalStorage();
-              }
-          });
+      quantityInput.addEventListener("input", function (e) {
+        let value = this.value.replace(/[^\d]/g, "");
+        value = parseInt(value) || 1;
+        if (value > 50) value = 50;
+        if (value < 1) value = 1;
+        this.value = value;
 
-          // Increase quantity
-          increaseBtn.addEventListener("click", () => {
-              if (item.quantity < 50) {  // Added maximum quantity check
-                  item.quantity++;
-                  quantityInput.value = item.quantity;
-                  updateItemPrice(item, cartItem);
-                  updateTotal(calculateTotal());
-                  saveCartItemsToLocalStorage();
-              }
-          });
-
-          // Delete item
-          deleteBtn.addEventListener("click", () => {
-              cartItems.splice(index, 1);
-              renderCartItems();
-              updateTotal(calculateTotal());
-              saveCartItemsToLocalStorage();
-          });
-
-          cartItemsContainer.appendChild(cartItem);
-          total += item.price * item.quantity;
+        item.quantity = value;
+        updateItemPrice(item, cartItem);
+        updateTotal(calculateTotal());
+        saveCartItemsToLocalStorage();
       });
+
+      quantityInput.addEventListener("keypress", function (e) {
+        if (!/^\d$/.test(e.key)) {
+          e.preventDefault();
+        }
+      });
+
+      decreaseBtn.addEventListener("click", () => {
+        if (item.quantity > 1) {
+          item.quantity--;
+          quantityInput.value = item.quantity;
+          updateItemPrice(item, cartItem);
+          updateTotal(calculateTotal());
+          saveCartItemsToLocalStorage();
+        }
+      });
+
+      increaseBtn.addEventListener("click", () => {
+        if (item.quantity < 50) {
+          // Added maximum quantity check
+          item.quantity++;
+          quantityInput.value = item.quantity;
+          updateItemPrice(item, cartItem);
+          updateTotal(calculateTotal());
+          saveCartItemsToLocalStorage();
+        }
+      });
+
+      deleteBtn.addEventListener("click", () => {
+        cartItems.splice(index, 1);
+        renderCartItems();
+        updateTotal(calculateTotal());
+        saveCartItemsToLocalStorage();
+      });
+
+      cartItemsContainer.appendChild(cartItem);
+      total += item.price * item.quantity;
+    });
   }
 
   updateTotal(total);
@@ -134,7 +135,7 @@ function updateItemPrice(item, cartItem) {
 function calculateTotal() {
   let total = 0;
   cartItems.forEach((item) => {
-      total += item.price * item.quantity;
+    total += item.price * item.quantity;
   });
   return total;
 }
@@ -142,7 +143,7 @@ function calculateTotal() {
 function updateTotal(total) {
   const totalElement = document.getElementById("total");
   if (totalElement) {
-      totalElement.textContent = `Total: $${total.toFixed(2)}`;
+    totalElement.textContent = `Total: $${total.toFixed(2)}`;
   }
 }
 
@@ -156,8 +157,8 @@ renderCartItems();
 // Setup checkout button
 const checkoutBtn = document.getElementById("checkoutBtn");
 if (checkoutBtn) {
-  checkoutBtn.addEventListener("click", function() {
-      localStorage.setItem("totalPrice", calculateTotal().toFixed(2));
-      window.location.href = "checkout.html";
+  checkoutBtn.addEventListener("click", function () {
+    localStorage.setItem("totalPrice", calculateTotal().toFixed(2));
+    window.location.href = "checkout.html";
   });
 }

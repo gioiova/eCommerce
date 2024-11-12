@@ -49,10 +49,11 @@ function displayProduct(product) {
         <p class="text-gray-600">${description}</p>
         <div class="text-3xl font-bold text-gray-800 mt-2">${price} $</div>
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-4">
+                  <input type="number" value="1" min="1" class="quantity-input w-24 text-center border border-gray-300 rounded-lg p-3 focus:outline-none" />
+
           <button type="submit" class="add-to-cart-btn w-full sm:w-auto bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
             Add to Cart
           </button>
-          <input type="number" value="1" min="1" class="quantity-input w-24 text-center border border-gray-300 rounded-lg p-3 focus:outline-none" />
         </div>
       </div>`;
 
