@@ -15,6 +15,8 @@ async function initProductPage() {
   await getRelatedProducts(category);
 }
 
+
+
 // Fetch product details by ID
 async function getProductDetails(id) {
   const response = await fetch(`https://dummyjson.com/products/${id}`);
@@ -26,32 +28,31 @@ let displayedProducts = [];
 const widthClass =
   displayedProducts.length >= 1 ? "w-50" : "w-full sm:w-1/2 lg:w-1/4";
 
-// Display product on the page
 function displayProduct(product) {
   const { id, title, thumbnail, price, rating, description } = product;
   const productEl = document.createElement("div");
-  productEl.className = `flex flex-col bg-white shadow-lg border-gray-100 border sm:rounded-3xl p-4 ${widthClass}`;
+  productEl.className =
+    "flex flex-col md:flex-row w-full max-w-6xl mx-auto px-4 md:px-8 gap-8";
   productEl.innerHTML = `
-      <div class="h-48 overflow-hidden flex items-center justify-center bg-white">
-        <img class="rounded-3xl shadow-lg h-full w-auto object-cover" src="${thumbnail}" alt="">
+      <div class="w-full md:w-1/2">
+        <div class="aspect-square overflow-hidden rounded-3xl shadow-lg bg-white">
+          <img class="w-full h-full object-contain p-4" src="${thumbnail}" alt="">
+        </div>
       </div>
-      <div class="flex flex-col mt-4 gap-4">
-        <div class="flex justify-between items-center">
-          <h2 class="text-lg font-bold">${title}</h2>
+      <div class="w-full md:w-1/2 flex flex-col gap-4">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+          <h2 class="text-xl md:text-2xl font-bold">${title}</h2>
           <div class="${getClassByRate(
             rating
           )} font-bold rounded-xl p-2">${rating}</div>
         </div>
-        <p class="text-gray-400 max-h-20 overflow-y-hidden">${description.slice(
-          0,
-          70
-        )}...</p>
-        <div class="text-2xl font-bold text-gray-800 mt-2">${price} $</div>
-        <div class="flex items-center justify-between gap-2 mt-4">
-          <button type="submit" class="add-to-cart-btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
+        <p class="text-gray-600">${description}</p>
+        <div class="text-3xl font-bold text-gray-800 mt-2">${price} $</div>
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-4">
+          <button type="submit" class="add-to-cart-btn w-full sm:w-auto bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
             Add to Cart
           </button>
-          <input type="number" value="1" min="1" class="quantity-input w-16 text-center border border-gray-300 rounded-lg p-2 focus:outline-none" />
+          <input type="number" value="1" min="1" class="quantity-input w-24 text-center border border-gray-300 rounded-lg p-3 focus:outline-none" />
         </div>
       </div>`;
 
@@ -59,7 +60,7 @@ function displayProduct(product) {
   const quantityInput = productEl.querySelector(".quantity-input");
 
   addToCartBtn.addEventListener("click", (e) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     const quantity = parseInt(quantityInput.value);
     addToCart({ id, title, thumbnail, price, quantity });
   });
@@ -99,15 +100,18 @@ async function getRelatedProducts(category) {
 
 // Display related products
 function displayRelatedProducts(relatedProducts) {
+  relatedSection.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-4 sm:px-8 lg:px-16 max-w-7xl mx-auto";
+  
   relatedSection.innerHTML = relatedProducts
     .map(
       (product) => `
-      <a href="detail.html?id=${product.id}&category=${product.category}" class="flex flex-col bg-white shadow-lg border-gray-100 border sm:rounded-3xl p-4 w-60">
-        <div class="h-48 overflow-hidden flex items-center justify-center bg-white">
-          <img class="rounded-3xl shadow-lg h-full w-auto object-cover" src="${product.thumbnail}" alt="${product.title}">
+      <a href="detail.html?id=${product.id}&category=${product.category}" 
+         class="flex flex-col bg-white shadow-lg border-gray-100 border rounded-3xl p-4 hover:shadow-xl transition-shadow">
+        <div class="aspect-square overflow-hidden flex items-center justify-center bg-white">
+          <img class="rounded-2xl shadow-lg w-full h-full object-contain p-2" src="${product.thumbnail}" alt="${product.title}">
         </div>
         <div class="flex flex-col mt-4 gap-2 text-center">
-          <h3 class="text-lg font-bold">${product.title}</h3>
+          <h3 class="text-lg font-bold line-clamp-2">${product.title}</h3>
           <p class="text-2xl font-semibold text-gray-800">${product.price} $</p>
         </div>
       </a>
@@ -115,17 +119,15 @@ function displayRelatedProducts(relatedProducts) {
     )
     .join("");
 
-  
   relatedSection.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", (event) => {
       event.preventDefault();
       const url = new URL(link.href);
       history.pushState({}, "", url);
-      initProductPage(); // Re-initialize product and related products
+      initProductPage();
     });
   });
 }
-
 
 function addToCart(product) {
   const existingProduct = cartItems.find((item) => item.id === product.id);
@@ -134,15 +136,13 @@ function addToCart(product) {
   } else {
     cartItems.push(product);
   }
-  saveCartItemsToLocalStorage(); 
+  saveCartItemsToLocalStorage();
   updateCartIcon();
 }
-
 
 function saveCartItemsToLocalStorage() {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
 }
-
 
 function updateCartIcon() {
   let totalItems = 0;
