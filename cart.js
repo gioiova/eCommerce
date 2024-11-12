@@ -44,7 +44,27 @@ function getCartItemsFromLocalStorage() {
       const increaseBtn = cartItem.querySelector(".increase-btn");
       const quantityInput = cartItem.querySelector(".quantity-input");
       const deleteBtn = cartItem.querySelector(".delete-btn");
+      
+      quantityInput.addEventListener("input",function(e) {
+
+        let value = this.value.replace(/[^\d]/g, '');
   
+        value  = parseInt(value) || 1;
+  
+        if (value > 50) value = 50;
+        if(value < 1) value = 1;
+  
+        this.value = value;
+  
+      });
+      
+      //Prevent typing of non-numeric characters
+      quantityInput.addEventListener("keypress",function(e) {
+        if (!/^\d$/.test(e.key)) {
+          e.preventDefault();
+      }
+      });
+
       decreaseBtn.addEventListener("click", () => {
         if (item.quantity > 1) {
           item.quantity--;

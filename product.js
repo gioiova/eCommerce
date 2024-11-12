@@ -165,6 +165,26 @@ function showProducts(page) {
         e.stopPropagation();
       });
 
+      quantityInput.addEventListener("input",function(e) {
+
+        let value = this.value.replace(/[^\d]/g, '');
+  
+        value  = parseInt(value) || 1;
+  
+        if (value > 50) value = 50;
+        if(value < 1) value = 1;
+  
+        this.value = value;
+  
+      });
+      
+      //Prevent typing of non-numeric characters
+      quantityInput.addEventListener("keypress",function(e) {
+        if (!/^\d$/.test(e.key)) {
+          e.preventDefault();
+      }
+      });
+
     productEl.addEventListener("click", () => {
       window.location.href = `detail.html?id=${id}&category=${category}`;
     });

@@ -59,6 +59,8 @@ function displayProduct(product) {
   const addToCartBtn = productEl.querySelector(".add-to-cart-btn");
   const quantityInput = productEl.querySelector(".quantity-input");
 
+
+
   addToCartBtn.addEventListener("click", (e) => {
     e.stopPropagation();
     const quantity = parseInt(quantityInput.value);
@@ -67,6 +69,26 @@ function displayProduct(product) {
 
   quantityInput.addEventListener("click", (e) => {
     e.stopPropagation();
+  });
+
+  quantityInput.addEventListener("input",function(e) {
+
+    let value = this.value.replace(/[^\d]/g, '');
+
+    value  = parseInt(value) || 1;
+
+    if (value > 50) value = 50;
+    if(value < 1) value = 1;
+
+    this.value = value;
+
+  });
+  
+  //Prevent typing of non-numeric characters
+  quantityInput.addEventListener("keypress",function(e) {
+    if (!/^\d$/.test(e.key)) {
+      e.preventDefault();
+  }
   });
 
   main.appendChild(productEl);
