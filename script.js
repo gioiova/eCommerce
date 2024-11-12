@@ -71,7 +71,7 @@ function showProducts() {
           <button type="submit" class="add-to-cart-btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
             Add to Cart
           </button>
-          <input type="number" value="1" min="1" class="quantity-input w-16 text-center border border-gray-300 rounded-lg p-2 focus:outline-none" />
+          <input type="number" value="1" min="1" max="50" class="quantity-input w-16 text-center border border-gray-300 rounded-lg p-2 focus:outline-none" />
         </div>
       </div>`;
 
@@ -87,6 +87,28 @@ function showProducts() {
     quantityInput.addEventListener("click", (e) => {
       e.stopPropagation();
     });
+
+    quantityInput.addEventListener("input",function(e) {
+
+      let value = this.value.replace(/[^\d]/g, '');
+
+      value  = parseInt(value) || 1;
+
+      if (value > 50) value = 50;
+      if(value < 1) value = 1;
+
+      this.value = value;
+
+    });
+    
+    //Prevent typing of non-numeric characters
+    quantityInput.addEventListener("keypress",function(e) {
+      if (!/^\d$/.test(e.key)) {
+        e.preventDefault();
+    }
+    });
+
+
 
     productEl.addEventListener("click", () => {
       window.location.href = `detail.html?id=${id}&category=${category}`;
