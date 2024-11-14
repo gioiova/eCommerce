@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="favicon" href="./src/img/logo.svg">
     <link rel="stylesheet" href="./src/styles/style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Products</title>
@@ -49,12 +50,12 @@
       </div>
     </header>
 
-    <div id="categories" class="flex flex-wrap justify-center gap-4">
+    <div id="categories" class="flex flex-wrap justify-center gap-4 mb-4">
       <!-- Category cards -->
     </div>
 
     <!-- Product Listing Section -->
-    <div id="product-listing" class="hidden">
+    <div id="product-listing" class="hidden mb-4 ">
       <button
         id="backButton"
         class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg mb-4 hover:bg-blue-700"
@@ -67,14 +68,16 @@
       <div id="pagination" class="flex justify-center mt-4"></div>
     </div>
 
+   
     <!-- Footer -->
-    <footer class="bg-gradient-to-r from-blue-500 to-blue-700 text-white  mt-4">
+    <footer class="bg-gradient-to-r from-blue-500 to-blue-700 text-white  mt-auto">
       <div class=" mx-auto px-6 text-center">
         <div class="mt-4 text-sm">
           <p>&copy; 2024 Your Company. All Rights Reserved.</p>
         </div>
       </div>
     </footer>
+ 
 
     <script src="./product.js"></script>
 
